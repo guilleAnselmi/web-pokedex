@@ -2,7 +2,7 @@
   <div class="px-4">
     <div  @click="onItemClick(item)" v-for="item in items" :key="item.id">
       <slot>
-        <div class="bg-red-400 text-white text-sm md:text-xl p-2 overflow-auto my-2">
+        <div class="cursor-pointer ring-[#93042A]  hover:ring-4 shadow-lg transform active:scale-95 transition-transform bg-[#D30A40] text-white text-sm md:text-xl p-2 overflow-auto my-2">
           {{ item[labelItem] }}
         </div>
       </slot>
