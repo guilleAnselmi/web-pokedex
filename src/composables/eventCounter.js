@@ -1,39 +1,30 @@
+import { ref, computed } from 'vue'
 export function useEventCounter(itemKey, key) {
-  const clicks = (item) => {
-    const itemsStr = window.localStorage.getItem(String(key))
-    if (!itemsStr) {
-      return 0
-    }
-
-    const localItem = JSON.parse(itemsStr).find((el) => el[itemKey] === item[itemKey])
-
-    return localItem ? localItem.clicks : 0
-  }
-
-  function generateNewItem(item) {
-    return {
-      ...item,
-      clicks: 1
-    }
-  }
+  const localItem = ref(null)
+  
+  const clicks = computed(() => {
+    console.log('clicks', localItem.value)
+    return localItem.value ? localItem.value.clicks : 0
+  })
 
   const increment = (item) => {
-    const itemsStr = window.localStorage.getItem(key)
+    const storageStr = window.localStorage.getItem(key)
 
-    if (!itemsStr) {
-      const localItem = generateNewItem(item)
-      window.localStorage.setItem(String(key), JSON.stringify([localItem]))
+    if (!storageStr) {
+      localItem.value = generateNewItem(item)
+      window.localStorage.setItem(String(key), JSON.stringify([localItem.value]))
       return
     }
 
-    const items = JSON.parse(itemsStr)
+    const items = JSON.parse(storageStr)
 
-    let localItem = items.find((el) => el[itemKey] === item[itemKey])
-    if (!localItem) {
-      localItem = generateNewItem(item)
-      items.push(localItem)
+    const finded = items.find((el) => el && el[itemKey] === item[itemKey])
+    if (!finded) {
+      localItem.value = generateNewItem(item)
+      items.push(localItem.value)
     } else {
-      localItem.clicks = localItem.clicks + 1
+      finded.clicks += 1
+      localItem.value = finded
     }
 
     window.localStorage.setItem(key, JSON.stringify(items))

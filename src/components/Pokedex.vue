@@ -108,7 +108,6 @@
           width="216"
           height="216"
           :xlink:href="pokemon.sprites.front_default"
-          @click="increment(pokemon)"
         />
 
         <text class="cls-2" x="350" y="392" font-size="10" v-if="pokemon">#{{ pokemon.id }}</text>
@@ -116,21 +115,25 @@
           H:{{ pokemon.height }} W:{{ pokemon.weight }}
         </text>
         <text class="cls-2" x="350" y="416" font-size="10" v-if="pokemon">{{ pokemonTypes }}</text>
+
+        <text class="cls-2" x="335" y="510" font-size="10" v-if="pokemon">Clicks:{{ clicks }}</text>
       </g>
     </g>
   </svg>
 </template>
 
 <script setup>
-import { useEventCounter } from '../composables/eventCounter'
 import { computed } from 'vue'
+import { useCounterStore } from '../stores/counter'
+const counterStore = useCounterStore()
+
 const props = defineProps({
   pokemon: {
     type: Object
   }
 })
-const { increment } = useEventCounter('gifurl', 'pokemon:clicked')
 
+const clicks = computed(() => counterStore.clicks)
 const pokemonTypes = computed(() => {
   return props.pokemon.types.reduce((acc, val) => {
     return (acc += ` ${val.type.name}`)
