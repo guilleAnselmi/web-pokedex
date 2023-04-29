@@ -1,36 +1,41 @@
 <template>
-  <main>
-    <div class="container mx-auto">
-      <h1 class="text-center mt-6 text-4xl font-bold italic">Web Pokedex</h1>
+  <div class="container mx-auto max-h-screen overflow-hidden">
+    <h1 class="text-center mt-6 text-4xl font-bold italic">Web Pokedex</h1>
 
-      <div class="flex align-center justify-center mt-4">
-        <!-- <Search @search="onSearch"></Search> -->
-      </div>
-      <div class="grid lg:grid-cols-2 mt-4 text-center">
-        <ItemList
-          ref="lisst"
-          class="max-h-screen lg:max-h-[90vh] xl:max-h-screen overflow-auto"
-          @itemClicked="onPokemonClicked"
-          :items="pokemons"
-        >
-          <!-- TODO find a way to add itemlist slot with dinamic data <PokemonItem :pokemon="item"></PokemonItem> -->
-        </ItemList>
+    <div class="flex align-center justify-center mt-4">
+      <!-- <Search @search="onSearch"></Search> -->
+    </div>
+    <div class="grid lg:grid-cols-2 mt-4 text-center h-[90vh]">
+      <ItemList
+        ref="list"
+        class="max-h-full lg:max-h-[90vh] xl:max-h-full overflow-auto"
+        @itemClicked="onPokemonClicked"
+        :items="pokemons"
+      >
+        <!-- TODO find a way to add itemlist slot with dinamic data <PokemonItem :pokemon="item"></PokemonItem> -->
+      </ItemList>
 
-        <!--TODO Mobile pokedex -->
-
+      <!--TODO Mobile pokedex -->
+      <Modal :show="showPokedex" @close="closeModal()" v-if="!largerThanLg">
         <Pokedex
-          v-if="largerThanSm"
-          class="flex justify-center w-full lg:max-h-screen"
+          class="flex justify-center w-full md:w-[70vw] lg:max-h-screen"
           :pokemon="selectedPokemon"
         />
-      </div>
+      </Modal>
+      <Pokedex
+        v-if="largerThanLg"
+        class="flex justify-center w-full max-h-full"
+        :pokemon="selectedPokemon"
+      />
     </div>
-  </main>
+  </div>
 </template>
 
 <script setup>
 import ItemList from '../components/ItemList.vue'
 import Pokedex from '../components/Pokedex.vue'
+import Modal from '../components/Modal.vue'
+import Search from '../components/Search.vue'
 import { onBeforeMount, ref } from 'vue'
 import pokemonsService from '../services/pokemonsService'
 import { useInfiniteScroll } from '@vueuse/core'
@@ -38,29 +43,42 @@ import { useCounterStore } from '../stores/counter'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
-const largerThanSm = breakpoints.greater('sm') // sm and larger
+const largerThanLg = breakpoints.greater('lg') // sm and larger
 
 const list = ref()
-const next = null
+
+const next = ref(null)
 const limit = 60
+
 const pokemons = ref([])
+
 const counterStore = useCounterStore()
+const showPokedex = ref(false)
+
+onBeforeMount(async () => {
+  await fetchPokemons()
+})
 
 useInfiniteScroll(
   list,
-  () => {
-    fetchPokemons()
+  async () => {
+    await nextPokemons()
   },
   { distance: 10 }
 )
 
-onBeforeMount(() => {
-  fetchPokemons()
-})
-
 async function fetchPokemons() {
-  const response = await pokemonsService.getAll(limit, next)
+  const response = await pokemonsService.getAll(limit)
   pokemons.value.push(...response.results)
+  next.value = response.next
+}
+async function nextPokemons() {
+  if (!next.value) {
+    return
+  }
+  const response = await pokemonsService.http.get(next.value).then((res) => res.data)
+  pokemons.value.push(...response.results)
+  next.value = response.next
 }
 
 const selectedPokemon = ref(null)
@@ -69,9 +87,13 @@ async function onPokemonClicked(item) {
   const response = await pokemonsService.http.get(item.url)
   selectedPokemon.value = response.data
   counterStore.incrementClick(item)
+  showPokedex.value = true
 }
 
+function closeModal() {
+  showPokedex.value = false
+}
 function onSearch(searchTerm) {
-  //TODO call api with search params
+  //TODO implement search
 }
 </script>

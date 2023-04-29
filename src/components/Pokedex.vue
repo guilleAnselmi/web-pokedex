@@ -1,5 +1,5 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="240 40 320 525">
+  <svg  xmlns="http://www.w3.org/2000/svg" viewBox="240 40 320 525">
     <g id="Layer_2" data-name="Layer 2">
       <g id="Layer_4" data-name="Layer 4">
         <path
@@ -116,7 +116,8 @@
         </text>
         <text class="cls-2" x="350" y="416" font-size="10" v-if="pokemon">{{ pokemonTypes }}</text>
 
-        <text class="cls-2" x="335" y="510" font-size="10" v-if="pokemon">Clicks:{{ clicks }}</text>
+        <text class="cls-2" x="335" y="490" font-size="9" v-if="pokemon">{{ pokemon.name }}</text>
+        <text class="cls-2" x="335" y="520" font-size="8" v-if="pokemon">Clicks:{{ clicks }}</text>
       </g>
     </g>
   </svg>
