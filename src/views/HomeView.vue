@@ -13,6 +13,9 @@
         :items="pokemons"
       >
         <!-- TODO find a way to add itemlist slot with dinamic data <PokemonItem :pokemon="item"></PokemonItem> -->
+        <template v-slot="{ item }">
+          <PokemonItem :pokemon="item"></PokemonItem>
+        </template>
       </ItemList>
 
       <!--TODO Mobile pokedex -->
@@ -35,6 +38,7 @@
 import ItemList from '../components/ItemList.vue'
 import Pokedex from '../components/Pokedex.vue'
 import Modal from '../components/Modal.vue'
+import PokemonItem from '../components/PokemonItem.vue'
 import Search from '../components/Search.vue'
 import { onBeforeMount, ref } from 'vue'
 import pokemonsService from '../services/pokemonsService'
