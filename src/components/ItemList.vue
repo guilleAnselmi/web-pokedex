@@ -1,6 +1,6 @@
 <template>
   <div class="px-4">
-    <div @click="onItemClick(item)" v-for="item in items" :key="item.id">
+    <div data-test-id="item" @click="onItemClick(item)" v-for="item in items" :key="item.id">
       <slot :item="item">
         <div>
           {{ item[labelItem] }}
