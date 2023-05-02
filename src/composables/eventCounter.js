@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 export function useEventCounter(itemKey, key) {
   const localItem = ref(null)
-  
+
   const clicks = computed(() => {
     console.log('clicks', localItem.value)
     return localItem.value ? localItem.value.clicks : 0

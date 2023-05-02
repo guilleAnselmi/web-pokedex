@@ -7,5 +7,4 @@ describe('PokemonItem', () => {
     const wrapper = mount(PokemonItem, { props: { pokemon } })
     expect(wrapper.text()).toBe('pikachu')
   })
-
 })

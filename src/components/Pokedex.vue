@@ -110,14 +110,22 @@
           :xlink:href="pokemon.sprites.front_default"
         />
 
-        <text data-test-id="id" class="cls-2" x="350" y="392" font-size="10" v-if="pokemon">#{{ pokemon.id }}</text>
+        <text data-test-id="id" class="cls-2" x="350" y="392" font-size="10" v-if="pokemon">
+          #{{ pokemon.id }}
+        </text>
         <text data-test-id="size" class="cls-2" x="350" y="404" font-size="10" v-if="pokemon">
           H:{{ pokemon.height }} W:{{ pokemon.weight }}
         </text>
-        <text data-test-id="types" class="cls-2" x="350" y="416" font-size="10" v-if="pokemon">{{ pokemonTypes }}</text>
+        <text data-test-id="types" class="cls-2" x="350" y="416" font-size="10" v-if="pokemon">
+          {{ pokemonTypes }}
+        </text>
 
-        <text data-test-id="name" class="cls-2" x="335" y="490" font-size="9" v-if="pokemon">{{ pokemon.name }}</text>
-        <text data-test-id="clicks" class="cls-2" x="335" y="520" font-size="8" v-if="pokemon">Clicks:{{ clicks }}</text>
+        <text data-test-id="name" class="cls-2" x="335" y="490" font-size="9" v-if="pokemon">
+          {{ pokemon.name }}
+        </text>
+        <text data-test-id="clicks" class="cls-2" x="335" y="520" font-size="8" v-if="pokemon">
+          Clicks:{{ clicks }}
+        </text>
       </g>
     </g>
   </svg>

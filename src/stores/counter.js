@@ -4,7 +4,7 @@ import { useLocalStorage } from '@vueuse/core'
 
 export const useCounterStore = defineStore('counter', {
   state: () => ({
-    pokemonsClicked: useLocalStorage('pokemon:clicks',[]),
+    pokemonsClicked: useLocalStorage('pokemon:clicks', []),
     currentPokemon: null
   }),
   getters: {
