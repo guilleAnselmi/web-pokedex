@@ -49,7 +49,7 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const largerThanLg = breakpoints.greater('lg') // sm and larger
 
-const list = ref()
+const list = ref(null)
 
 const next = ref(null)
 const limit = 60
@@ -77,6 +77,7 @@ async function fetchPokemons() {
   next.value = response.next
 }
 async function nextPokemons() {
+  console.log('next');
   if (!next.value) {
     return
   }
