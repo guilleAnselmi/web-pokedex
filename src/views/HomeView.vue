@@ -7,7 +7,6 @@
     </div>
     <div class="grid lg:grid-cols-2 mt-4 text-center h-[90vh]">
       <ItemList
-        ref="list"
         class="max-h-full lg:max-h-[90vh] xl:max-h-full overflow-auto"
         @itemClicked="onPokemonClicked"
         :items="pokemons"
@@ -63,13 +62,13 @@ onBeforeMount(async () => {
   await fetchPokemons()
 })
 
-useInfiniteScroll(
-  list,
-  async () => {
-    await nextPokemons()
-  },
-  { distance: 10 }
-)
+// useInfiniteScroll(
+//   list,
+//   async () => {
+//     await nextPokemons()
+//   },
+//   { distance: 10 }
+// )
 
 async function fetchPokemons() {
   const response = await pokemonsService.getAll(limit)
@@ -77,7 +76,7 @@ async function fetchPokemons() {
   next.value = response.next
 }
 async function nextPokemons() {
-  console.log('next');
+  console.log('next')
   if (!next.value) {
     return
   }
