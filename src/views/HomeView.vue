@@ -7,6 +7,7 @@
     </div>
     <div class="grid lg:grid-cols-2 mt-4 text-center h-[90vh]">
       <ItemList
+        v-infinite-scroll="nextPokemons"
         class="max-h-full lg:max-h-[90vh] xl:max-h-full overflow-auto"
         @itemClicked="onPokemonClicked"
         :items="pokemons"
@@ -41,7 +42,7 @@ import PokemonItem from '../components/PokemonItem.vue'
 import Search from '../components/Search.vue'
 import { onBeforeMount, ref } from 'vue'
 import pokemonsService from '../services/pokemonsService'
-import { useInfiniteScroll } from '@vueuse/core'
+import { vInfiniteScroll } from '@vueuse/components'
 import { useCounterStore } from '../stores/counter'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
@@ -61,14 +62,6 @@ const showPokedex = ref(false)
 onBeforeMount(async () => {
   await fetchPokemons()
 })
-
-// useInfiniteScroll(
-//   list,
-//   async () => {
-//     await nextPokemons()
-//   },
-//   { distance: 10 }
-// )
 
 async function fetchPokemons() {
   const response = await pokemonsService.getAll(limit)
